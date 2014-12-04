@@ -60,43 +60,91 @@
       <div class="row-fluid">
         <div class="span12">
           <div id="Map" class="Map_cotemaison"></div>
-            <script src="http://openlayers.org/api/OpenLayers.js"></script>
-<script>
-    var lat            = 48.860072;
-    var lon            = 2.341350;
-    var zoom           = 12;
-    var format         = "image/png";
-    
-    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
- 
-    map = new OpenLayers.Map("Map");
-    var mapbase        = new OpenLayers.Layer.OSM("BaseLayer",'',{isBaseLayer: true});
-    var tiled = new OpenLayers.Layer.WMS(
-                    "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
-                    {
-                        "LAYERS": 'Paris:accessibilite_des_equipements_de_la_ville_de_paris,Paris:cartographie_des_etablissements_tourisme_handicap',
-                        format: format,
-                        isBaseLayer: false,
-                        transparent: true
-                    },
-                    {
-                        buffer: 0,
-                        displayOutsideMaxExtent: true,
-                        opacity: 0.5,
-                        singleTile: true,
-                        yx : {'EPSG:4326' : true}
-                    } 
 
-                );
+  <script src="http://openlayers.org/api/OpenLayers.js"></script>
+  <script> 
+      var lat            = 48.860072;
+      var lon            = 2.341350;
+      var zoom           = 12;
+      var map1;
+      var map2;
+      var map3;
+      var mapbase;
+      var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+      var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+      var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+
+      function init(){
+        var format         = "image/png";
+   
+        map = new OpenLayers.Map("Map");
+        mapbase        = new OpenLayers.Layer.OSM("BaseLayer",'',{isBaseLayer: true});
+        map1 = new OpenLayers.Layer.WMS(
+            "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
+            {
+                "LAYERS": 'Paris:accessibilite_des_equipements_de_la_ville_de_paris,Paris:cartographie_des_etablissements_tourisme_handicap',
+                format: format,
+                isBaseLayer: false,
+                transparent: true
+            },
+            {
+                buffer: 0,
+                displayOutsideMaxExtent: true,
+                opacity: 0.5,
+                singleTile: true,
+                yx : {'EPSG:4326' : true}
+            } 
+        );
+        map2 = new OpenLayers.Layer.WMS(
+            "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
+            {
+                "LAYERS": 'Paris:cartographie_des_etablissements_tourisme_handicap',
+                format: format,
+                isBaseLayer: false,
+                transparent: true,
+                visibility: false
+            },
+            {
+                buffer: 0,
+                displayOutsideMaxExtent: true,
+                opacity: 0.5,
+                singleTile: true,
+                yx : {'EPSG:4326' : true}
+            } 
+        );
+        map3 = new OpenLayers.Layer.WMS(
+            "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
+            {
+                "LAYERS": 'Paris:accessibilite_des_equipements_de_la_ville_de_paris',
+                format: format,
+                isBaseLayer: false,
+                transparent: true,
+                visibility: false
+            },
+            {
+                buffer: 0,
+                displayOutsideMaxExtent: true,
+                opacity: 0.5,
+                singleTile: true,
+                yx : {'EPSG:4326' : true}
+            } 
+        );
         
-    map.addLayers([mapbase,tiled]);
- 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(position)); 
-    map.setCenter(position, zoom);
+      map.addLayers([mapbase,map1,map2,map3]);
+      var markers = new OpenLayers.Layer.Markers( "Markers" );
+      map.addLayer(markers);
+      markers.addMarker(new OpenLayers.Marker(position)); 
+      map.setCenter(position, zoom);
+    };  
+
+      function update(layer){
+        if (layer.getVisibility() == false) {
+            layer.setVisibility(true);
+        } else { 
+            layer.setVisibility(false);
+        }
+        
+    };  
 </script>
         </div>
       </div>

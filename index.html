@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+    <link rel="shortcut icon" href="favicon.ico">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Codé Maison - Accessibilité du piéton avec un handicap</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!--[if lt IE 9]>
+			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="css/styles.css" rel="stylesheet">
+	</head>
+	<body>
+<!-- begin template -->
+<div class="navbar navbar-custom navbar-fixed-top">
+ <div class="navbar-header"><a class="navbar-brand" href="index.html"><img alt="" src="images/logo.png" style="width: 150px; margin-top: -9px;"></a>
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">Accueil</a></li>
+        <li><a href="#">Donnéess publiques</a></li>
+        <li><a href="#">Données Utilisateurs</a></li>
+        <li><a href="faq.html">Foire aux questions</a></li>
+        <li>&nbsp;</li>
+      </ul>
+      <form class="navbar-form">
+        <div class="form-group" style="display:inline;">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><img alt="" src="images/fleche_bas.svg"></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Category 1</a></li>
+                <li><a href="#">Category 2</a></li>
+                <li><a href="#">Category 3</a></li>
+                <li><a href="#">Category 4</a></li>
+                <li><a href="#">Category 5</a></li> 
+              </ul>
+            </div>
+            <input type="text" class="form-control" placeholder="Rechercher...">
+            <span class="input-group-addon"><img alt="" src="images/recherche.svg"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+
+<div id="map-canvas"></div>
+<div class="container-fluid" id="main">
+  <div class="row">
+
+    <div class="col-sm-8 col-lg-9">
+      <div class="row-fluid">
+        <div class="span12">
+          <div id="Map" class="Map_cotemaison"></div>
+            <script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script>
+    var lat            = 48.860072;
+    var lon            = 2.341350;
+    var zoom           = 12;
+    var format         = "image/png";
+    
+    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+ 
+    map = new OpenLayers.Map("Map");
+    var mapbase        = new OpenLayers.Layer.OSM("BaseLayer",'',{isBaseLayer: true});
+    var tiled = new OpenLayers.Layer.WMS(
+                    "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
+                    {
+                        "LAYERS": 'Paris:accessibilite_des_equipements_de_la_ville_de_paris,Paris:cartographie_des_etablissements_tourisme_handicap',
+                        format: format,
+                        isBaseLayer: false,
+                        transparent: true
+                    },
+                    {
+                        buffer: 0,
+                        displayOutsideMaxExtent: true,
+                        opacity: 0.5,
+                        singleTile: true,
+                        yx : {'EPSG:4326' : true}
+                    } 
+
+                );
+        
+    map.addLayers([mapbase,tiled]);
+ 
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+    markers.addMarker(new OpenLayers.Marker(position)); 
+    map.setCenter(position, zoom);
+</script>
+        </div>
+      </div>
+    </div>
+
+  	<div class="col-sm-4 col-lg-3" id="left">
+      <h2 style="margin-bottom: 32px; font-size:19px">L’appli mobile et participative qui met Paris à la portée de tous</h2>
+      <!-- item list -->
+      <div class="panel panel-default">
+        <a href=""><div class="panel-heading"><img src="images/car5.png">Parkings sous sol accessibles</div></a>
+      </div>
+      <hr>
+      <div class="panel panel-default">
+        <a href=""><div class="panel-heading"><img src="images/greek1.png">Lieux et organismes accessibles</div></a>
+      </div>
+      <hr>
+      <div class="panel panel-default">
+        <a href=""><div class="panel-heading"><img src="images/underground.png">Station de métro / RER accessibles</div></a>
+      </div>
+      <hr>
+      <div class="panel panel-default">
+        <a href=""><div class="panel-heading"><img src="images/construction3.png">Zone de travaux</div></a>
+      </div>
+      <hr>
+      <div class="panel panel-default">
+        <a href=""><div class="panel-heading"><img src="images/parking.png">Places parking accessibles</div></a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- end template -->
+
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
+		<script src="js/scripts.js"></script>
+    <script src="js/accessible.js" type="text/javascript"></script>
+    <script src="js/accessible-require.js" type="text/javascript"></script>
+	</body>
+</html>

@@ -34,16 +34,6 @@
       <form class="navbar-form">
         <div class="form-group" style="display:inline;">
           <div class="input-group">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><img alt="" src="images/fleche_bas.svg"></button>
-              <ul class="dropdown-menu">
-                <li><a href="#">Category 1</a></li>
-                <li><a href="#">Category 2</a></li>
-                <li><a href="#">Category 3</a></li>
-                <li><a href="#">Category 4</a></li>
-                <li><a href="#">Category 5</a></li> 
-              </ul>
-            </div>
             <input type="text" class="form-control" placeholder="Rechercher...">
             <span class="input-group-addon"><img alt="" src="images/recherche.svg"></span>
           </div>
@@ -56,13 +46,13 @@
 <div class="container-fluid" id="main">
   <div class="row">
 
-    <div class="col-sm-8 col-lg-9">
+    <div class="col-sm-8 col-lg-8">
       <div class="row-fluid">
         <div class="span12">
           <div id="Map" class="Map_cotemaison"></div>
 
   <script src="http://openlayers.org/api/OpenLayers.js"></script>
-  <script> 
+  <script>
       var lat            = 48.876026;
       var lon            = 2.337730;
       var zoom           = 12;
@@ -75,7 +65,7 @@
 
       function init(){
         var format         = "image/png";
-   
+
         map = new OpenLayers.Map("Map");
         mapbase        = new OpenLayers.Layer.OSM("BaseLayer",'',{isBaseLayer: true});
         map2 = new OpenLayers.Layer.WMS(
@@ -92,7 +82,7 @@
                 displayOutsideMaxExtent: true,
                 singleTile: true,
                 yx : {'EPSG:4326' : true}
-            } 
+            }
         );
         map3 = new OpenLayers.Layer.WMS(
             "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
@@ -108,60 +98,60 @@
                 displayOutsideMaxExtent: true,
                 singleTile: true,
                 yx : {'EPSG:4326' : true}
-            } 
+            }
         );
-        
+
       map.addLayers([mapbase,map2,map3]);
       var markers = new OpenLayers.Layer.Markers( "Markers" );
       map.addLayer(markers);
-      markers.addMarker(new OpenLayers.Marker(position)); 
+      markers.addMarker(new OpenLayers.Marker(position));
       map.setCenter(position, zoom);
-    };  
+    };
 
       function update(layer){
         if (layer.getVisibility() == false) {
             layer.setVisibility(true);
-        } else { 
+        } else {
             layer.setVisibility(false);
         }
-        
-    };  
+
+    };
     function HideShowAll(){
         if (map2.getVisibility() == false && map3.getVisibility() == false) {
             map2.setVisibility(true);
             map3.setVisibility(true);
-        } else { 
+        } else {
             map2.setVisibility(false);
             map3.setVisibility(false);
         }
-        
-    };  
+
+    };
 </script>
         </div>
       </div>
     </div>
 
-  	<div class="col-sm-4 col-lg-3" id="left">
+  	<div class="col-sm-4 col-lg-4" id="left">
       <h2 style="margin-bottom: 32px; font-size:19px">L’appli mobile et participative qui met Paris à la portée de tous</h2>
       <!-- item list -->
       <div class="panel panel-default">
-        <a onclick="update(map3)"><div class="panel-heading"><img src="images/car5.png">Accessibilité des équipements</div></a>
+        <a style="cursor:pointer" onclick="update(map3)"><div class="panel-heading"><img src="images/car5.png">Accessibilité des équipements</div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a onclick="update(map2)"><div class="panel-heading"><img src="images/greek1.png">Lieux et organismes touristiques accessibles</div></a>
+        <a style="cursor:pointer" onclick="update(map2)"><div class="panel-heading"><img src="images/greek1.png">Lieux et organismes touristiques accessibles</div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a onclick="HideShowAll()"><div class="panel-heading"><img src="images/underground.png">Tout voir</div></a>
+        <a style="cursor:pointer" onclick="HideShowAll()"><div class="panel-heading"><img src="images/underground.png">Tout voir</div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a><div class="panel-heading"><img src="images/construction3.png">Zone de travaux</div></a>
+        <a style="cursor:pointer"><div class="panel-heading"><img src="images/construction3.png">Zone de travaux</div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a><div class="panel-heading"><img src="images/parking.png">Places parking accessibles</div></a>
+        <a style="cursor:pointer"><div class="panel-heading"><img src="images/parking.png">Places parking accessibles</div></a>
       </div>
     </div>
 

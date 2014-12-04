@@ -66,7 +66,6 @@
       var lat            = 48.876026;
       var lon            = 2.337730;
       var zoom           = 12;
-      var map1;
       var map2;
       var map3;
       var mapbase;
@@ -79,21 +78,6 @@
    
         map = new OpenLayers.Map("Map");
         mapbase        = new OpenLayers.Layer.OSM("BaseLayer",'',{isBaseLayer: true});
-        map1 = new OpenLayers.Layer.WMS(
-            "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
-            {
-                "LAYERS": 'Paris:accessibilite_des_equipements_de_la_ville_de_paris,Paris:cartographie_des_etablissements_tourisme_handicap',
-                format: format,
-                isBaseLayer: false,
-                transparent: true
-            },
-            {
-                buffer: 0,
-                displayOutsideMaxExtent: true,
-                singleTile: true,
-                yx : {'EPSG:4326' : true}
-            } 
-        );
         map2 = new OpenLayers.Layer.WMS(
             "Paris:cartographie_des_etablissements_tourisme_handicap - Tiled", "http://code-maison.cloud.ger.systems/geoserver/Paris/wms",
             {
@@ -127,7 +111,7 @@
             } 
         );
         
-      map.addLayers([mapbase,map1,map2,map3]);
+      map.addLayers([mapbase,map2,map3]);
       var markers = new OpenLayers.Layer.Markers( "Markers" );
       map.addLayer(markers);
       markers.addMarker(new OpenLayers.Marker(position)); 
@@ -139,6 +123,16 @@
             layer.setVisibility(true);
         } else { 
             layer.setVisibility(false);
+        }
+        
+    };  
+    function HideShowAll(){
+        if (map2.getVisibility() == false && map3.getVisibility() == false) {
+            map2.setVisibility(true);
+            map3.setVisibility(true);
+        } else { 
+            map2.setVisibility(false);
+            map3.setVisibility(false);
         }
         
     };  
@@ -159,7 +153,7 @@
       </div>
       <hr>
       <div class="panel panel-default">
-        <a onclick="update(map1)"><div class="panel-heading"><img src="images/underground.png">Tout voir</div></a>
+        <a onclick="HideShowAll()"><div class="panel-heading"><img src="images/underground.png">Tout voir</div></a>
       </div>
       <hr>
       <div class="panel panel-default">

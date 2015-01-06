@@ -132,8 +132,15 @@ padding: 0.3em;
     margin: 0 auto;
 }
 
+.clicked {
+    background-color: rgb(247, 247, 247);
+    background-image: url("../images/Check-icon.png");
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    background-size: 12px;
+}
 
-
-
-
+.panel-default {
+    min-width: 391px;
+}
 

@@ -12,6 +12,7 @@
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<link href="css/styles.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 	</head>
 	<body onload="init()">
 <!-- begin template -->
@@ -36,7 +37,7 @@
 <div class="container-fluid" id="main">
   <div class="row">
 
-    <div class="col-sm-8 col-lg-8">
+    <div class="col-sm-7 col-lg-8">
       <div class="row-fluid">
         <div class="span12">
           <div id="Map" class="Map_cotemaison"></div>
@@ -124,24 +125,24 @@
   	<div class="col-sm-4 col-lg-4" id="left">
       <h2 style="margin-bottom: 32px; font-size:19px">L’appli mobile et participative qui met Paris à la portée de tous</h2>
       <!-- item list -->
-      <div class="panel panel-default">
+      <div class="clicked panel panel-default btn1">
         <a style="cursor:pointer" onclick="update(map3)"><div class="panel-heading"><img src="images/man349.png">Accessibilité des équipements</div></a>
       </div>
       <hr>
-      <div class="panel panel-default">
+      <div class="clicked panel panel-default btn2">
         <a style="cursor:pointer" onclick="update(map2)"><div class="panel-heading"><img src="images/greek1.png">Lieux touristiques et organismes publics accessibles</div></a>
       </div>
       <hr>
-      <div class="panel panel-default">
+      <div class="clicked panel panel-default btn3">
         <a style="cursor:pointer" onclick="HideShowAll()"><div class="panel-heading"><img src="images/placeholder8.png">Tout voir</div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a style="cursor:pointer"><div class="panel-heading"><img src="images/construction3.png">Zone de travaux <em>(à venir)</em></div></a>
+        <a style="cursor:pointer"><div class="panel-heading"><img src="images/construction3.png">Zone de travaux <em style="color:red">(à venir)</em></div></a>
       </div>
       <hr>
       <div class="panel panel-default">
-        <a style="cursor:pointer"><div class="panel-heading"><img src="images/parking.png">Places parking accessibles <em>(à venir)</em></div></a>
+        <a style="cursor:pointer"><div class="panel-heading"><img src="images/parking.png">Places parking accessibles <em style="color:red">(à venir)</em></div></a>
       </div>
       <hr>
       <p><img src="images/1.png" style="margin-right:5px; margin-top:-3px">Accessiblité minimale</p>
@@ -149,7 +150,7 @@
       <p><img src="images/3.png" style="margin-right:5px; margin-top:-3px">Accessiblité totale</p>
       <p><img src="images/4.png" style="margin-right:5px; margin-top:-3px">Accessiblité totale + locaux de travail</p>
     </div>
-    
+
 
   </div>
 </div>
@@ -162,3 +163,32 @@
 
 	</body>
 </html>
+
+<script type="text/javascript">
+      $('.btn1').click(function () {
+    if ($('.btn1').is('.clicked')) {
+        $('.btn1').removeClass('clicked');
+    }
+    else{
+        $('.btn1').addClass('clicked');
+    }
+    });
+
+      $('.btn2').click(function () {
+    if ($('.btn2').is('.clicked')) {
+        $('.btn2').removeClass('clicked');
+    }
+    else{
+        $('.btn2').addClass('clicked');
+    }
+    });
+
+      $('.btn3').click(function () {
+    if ($('.btn1,.btn2,.btn3').is('.clicked')) {
+        $('.btn1,.btn2,.btn3').removeClass('clicked');
+    }
+    else{
+        $('.btn1,.btn2,.btn3').addClass('clicked');
+    }
+    });
+</script>

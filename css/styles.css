@@ -17,6 +17,14 @@ body{
   	padding-top:50px; /*padding for navbar*/
 }
 
+input {
+    margin: 8px 8px 0 !important;
+}
+
+label {
+    font-family: Arial;
+}
+
 .navbar-custom .icon-bar {
 	background-color:#fff;
 }
@@ -132,15 +140,33 @@ padding: 0.3em;
     margin: 0 auto;
 }
 
-.clicked {
-    background-color: rgb(247, 247, 247);
-    background-image: url("../images/Check-icon.png");
+.parc{background-position: -54px -144px;}
+.cimetiere{background-position: -216px -48px;}
+.college{background-position: -54px -240px;}
+.admin{background-position: 0px -264px;}
+.piscine{background-position: -108px -216px;}
+.sport{background-position: 0px -192px;}
+.jardin{background-position: -216px -456px;}
+.ecole{background-position: 0px -240px;}
+.monument{background-position: -216px -144px;}
+.musee{background-position: -108px -144px;}
+.hotel{background-position: -162px -144px;}
+.camping{background-position: -108px -168px;}
+.resto{background-position: 0px -288px;}
+
+.maki-icon {
+    background-image: url("../images/maki-sprite.png");
     background-repeat: no-repeat;
-    background-position: 3px 3px;
-    background-size: 12px;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    text-indent: -9999px;
+    display: inline-block;
+    margin-bottom: -8px;
 }
 
-.panel-default {
-    min-width: 391px;
-}
+
+
+
+
 

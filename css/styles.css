@@ -33,6 +33,11 @@ label {
     cursor: pointer;
 }
 
+.img_iphone2 {
+    width: 40px !important;
+    margin-top: 0px !important;
+}
+
 .text_iphone {
     color: #fff;
     text-decoration: none;

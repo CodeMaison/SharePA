@@ -113,6 +113,13 @@
 </div>
 <!-- end template -->
 
+<script type="text/javascript">
+  if((navigator.userAgent.match(/iPhone/i)) ||
+   (navigator.userAgent.match(/iPod/i))) {
+     if (document.cookie.indexOf("iphone_redirect=false") == -1) window.location = "http://lexpress.github.io/SharePA/iphone.html";
+  }
+</script>
+
 <script async src="js/bootstrap.min.js"></script>
 <script async src="js/map.js"></script>
 

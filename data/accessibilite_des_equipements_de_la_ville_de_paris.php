@@ -33,14 +33,14 @@ $labels = array(
 );
 
 foreach ($geo['features'] as $key => &$feature) {
-    if (!array_key_exists('handicap_moteur', $feature['properties']) || $feature['properties']['handicap_moteur'] < 1) {
+    if (!array_key_exists('handicap_moteur', $feature['properties']) || $feature['properties']['handicap_moteur'] < 0) {
         unset($geo['features'][$key]);
         continue;
     }
 
     switch ($feature['properties']['handicap_moteur']) {
         case 0:
-            $color = '#999999';
+            $color = '#ff0000';
             $description = 'Aucune accessibilité';
             break;
         case 1:

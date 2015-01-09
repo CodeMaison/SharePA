@@ -157,4 +157,7 @@ fclose($handle);
 
 //--------------------------------------------------------------------------------------------------------------------------
 // Render
-echo json_encode($geo);
+echo $json = json_encode($geo);
+
+// Save
+file_put_contents(__DIR__.'/points.json', $json);

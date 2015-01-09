@@ -6,7 +6,7 @@ error_reporting(-1);
 //--------------------------------------------------------------------------------------------------------------------------
 // accessibilite_des_equipements_de_la_ville_de_paris.geojson
 
-$geo = json_decode(file_get_contents('accessibilite_des_equipements_de_la_ville_de_paris.geojson'), true);
+$geo = json_decode(file_get_contents(__DIR__.'/accessibilite_des_equipements_de_la_ville_de_paris.geojson'), true);
 
 $symbols = array(
     'http://www.paris.fr/pratique/paris-au-vert/parcs-jardins-squares/p4952' => 'park2',
@@ -95,7 +95,7 @@ $geo['features'] = array_values($geo['features']);
 //--------------------------------------------------------------------------------------------------------------------------
 // cartographie_des_etablissements_tourisme_handicap.csv
 
-$handle = fopen('cartographie_des_etablissements_tourisme_handicap.csv', 'r');
+$handle = fopen(__DIR__.'/cartographie_des_etablissements_tourisme_handicap.csv', 'r');
 
 $head = fgetcsv($handle, 1000, ';');
 

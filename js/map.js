@@ -5,7 +5,7 @@ var map = L.mapbox.map('map', 'sharepa.kmj6g6i8')
     .setView([48.876026, 2.337730], 12);
 
 var featureLayer = L.mapbox.featureLayer()
-    .loadURL('data/accessibilite_des_equipements_de_la_ville_de_paris.php')
+    .loadURL('data/points.geojson')
     .addTo(map);
 
 var $boxes = jQuery('input.map-layer');

@@ -16,7 +16,7 @@ function update() {
   });
 
   featureLayer.setFilter(function (feature) {
-    return mapLayers[feature.properties['marker-symbol']];
+    return mapLayers[feature.properties['marker-symbol']] && mapLayers['accessibilite_'+feature.properties['handicap_moteur']];
   });
 }
 $boxes.on('change', update);

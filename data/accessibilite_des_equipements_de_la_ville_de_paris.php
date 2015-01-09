@@ -86,6 +86,7 @@ foreach ($geo['features'] as $key => &$feature) {
     $feature['properties']['marker-size'] = 'large';
     $feature['properties']['marker-symbol'] = $symbols[$feature['properties']['lien']];
     $feature['properties']['description'] = $description;
+    $feature['properties']['handicap_moteur'] = min($feature['properties']['handicap_moteur'], 3);
 }
 
 $geo['features'] = array_values($geo['features']);
@@ -108,7 +109,7 @@ $symbols = array(
     'Meublé de tourisme' => 'lodging',
     'Loisirs' => 'pitch',
     'Hébergement collectif' => 'lodging',
-    'Camping' => 'sampsite',
+    'Camping' => 'lodging',
     'Restaurant' => 'restaurant',
     'Résidence de tourisme' => 'lodging',
     'Palais des Congrès' => 'town-hall',
@@ -121,6 +122,7 @@ while ($data = fgetcsv($handle, 1000, ';'))
     if ($data['handicap_moteur'] != 'Oui') {
         continue;
     }
+    $data['handicap_moteur'] = 3;
 
     $description = '<h3>' . $data['etablissement'] . ' <small>(' . $data['structure'] . ')</small></h3>';
     $description .= '<ul>';

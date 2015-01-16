@@ -1,0 +1,21 @@
+/* TEAM */
+
+  Chef: Fabien CASALEGGIO
+
+  Project Manager: Anna SILLARD
+
+  UI Designer: Pierre BORFIGA
+
+  Developer: Jerome TAMARELLE
+    Twitter: @GromNaN
+    GitHub: @GromNaN
+
+  Developer: Bastien HERY
+
+  Journalist: Benoist FECHNER
+
+  iOS Developer: Renaud CODARINI
+
+/* THANKS */
+
+  Director: Sébastien ANGELE

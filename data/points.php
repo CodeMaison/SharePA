@@ -156,8 +156,84 @@ fclose($handle);
 
 
 //--------------------------------------------------------------------------------------------------------------------------
+// laposte_points_de_contact.csv
+
+$handle = fopen(__DIR__.'/laposte_points_de_contact.csv', 'r');
+
+$head = fgetcsv($handle, 2000, ';');
+
+
+while ($data = fgetcsv($handle, 2000, ';'))
+{
+    $data = array_combine($head, $data);
+
+    // Keep only data in Paris
+    if ($data['localite'] != 'PARIS') {
+        continue;
+    }
+
+    $data['handicap_moteur'] = 0;
+    $color = '#ff0000';
+
+    if ($data['accessibilite_absence_de_ressaut_de_plus_de_2_cm_de_haut'] == 'Oui'
+        && $data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] == 'Oui'
+        && $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui'
+        && $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] == 'Oui'
+        && $data['accessibilite_presence_d_un_guichet_surbaisse_ou_d_un_ecritoire'] == 'Oui') {
+        $data['handicap_moteur'] = 3;
+        $color = '#3bc353';
+    } elseif ($data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] == 'Oui'
+        && $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui') {
+        $data['handicap_moteur'] = 2;
+        $color = '#ffffbe';
+    } elseif ($data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui'
+        || $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] == 'Oui') {
+        $data['handicap_moteur'] = 1;
+        $color = '#ffca7d';
+    }
+
+    $description = '<h3>' . $data['libelle_du_site'] . ' <small>(' . $data['caracteristique_du_site'] . ')</small></h3>';
+    $description .= '<ul>';
+    $description .= '<li>Entree en fauteuil roulant : ' . $data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] . '</li>';
+    $description .= '<li>Circulation intérieur : ' . $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] . '</li>';
+    $description .= '<li>Guiché extérieur accessible : ' . $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] . '</li>';
+    $description .= '<li>Guiché surbaissé :  ' . $data['accessibilite_presence_d_un_guichet_surbaisse_ou_d_un_ecritoire'] . '</li>';
+    $description .= '</ul>';
+
+
+    $url = sprintf('http://www.laposte.fr/particulier/outils/trouver-un-bureau-de-poste/bureau-detail/%s/%s', 
+        str_replace(array(' - ', ' '), '-', strtolower($data['libelle_du_site'])),
+        $data['identifiant']);
+    $description .= '<p style="text-align:center"><small><a href="' . $url . '" target="_blank">Site internet</a></small></p>';
+
+    $data['marker-color'] = $color;
+    $data['marker-size'] = 'large';
+    $data['marker-symbol'] = 'post';
+    $data['description'] = $description;
+
+    $geo['features'][] = $x = array(
+        'type' => 'Feature',
+        'geometry' => array(
+            'type' => 'Point',
+            'coordinates' => array(
+                (float) $data['longitude'],
+                (float) $data['latlon'],
+            ),
+        ),
+        'properties' => $data,
+    );
+}
+
+fclose($handle);
+
+
+//--------------------------------------------------------------------------------------------------------------------------
 // Render
-echo $json = json_encode($geo);
+$json = json_encode($geo);
+
+if (PHP_SAPI != 'cli') {
+    echo $json;
+}
 
 // Save
-file_put_contents(__DIR__.'/points.json', $json);
+file_put_contents(__DIR__.'/points.geojson', $json);

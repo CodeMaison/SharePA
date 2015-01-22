@@ -3,10 +3,15 @@
 ini_set('display_errors', 'On');
 error_reporting(-1);
 
+$geo = array(
+    'type' => 'FeatureCollection',
+    'features' => array(),
+);
+
 //--------------------------------------------------------------------------------------------------------------------------
 // accessibilite_des_equipements_de_la_ville_de_paris.geojson
 
-$geo = json_decode(file_get_contents(__DIR__.'/accessibilite_des_equipements_de_la_ville_de_paris.geojson'), true);
+$file = json_decode(file_get_contents(__DIR__.'/accessibilite_des_equipements_de_la_ville_de_paris.geojson'), true);
 
 $symbols = array(
     'http://www.paris.fr/pratique/paris-au-vert/parcs-jardins-squares/p4952' => 'park2',
@@ -32,7 +37,7 @@ $labels = array(
     'http://www.paris.fr/' => 'Monument',
 );
 
-foreach ($geo['features'] as $key => &$feature) {
+foreach ($file['features'] as $key => &$feature) {
     if (!array_key_exists('handicap_moteur', $feature['properties']) || $feature['properties']['handicap_moteur'] < 0) {
         unset($geo['features'][$key]);
         continue;
@@ -81,12 +86,18 @@ foreach ($geo['features'] as $key => &$feature) {
 
     $description .= '<p style="text-align:center"><small><a href="' . $feature['properties']['lien'] . '" target="_blank">Site internet</a></small></p>';
 
+    $properties = array();
+    $properties['marker-color'] = $color;
+    $properties['marker-size'] = 'large';
+    $properties['marker-symbol'] = $symbols[$feature['properties']['lien']];
+    $properties['description'] = $description;
+    $properties['handicap_moteur'] = min($feature['properties']['handicap_moteur'], 3);
 
-    $feature['properties']['marker-color'] = $color;
-    $feature['properties']['marker-size'] = 'large';
-    $feature['properties']['marker-symbol'] = $symbols[$feature['properties']['lien']];
-    $feature['properties']['description'] = $description;
-    $feature['properties']['handicap_moteur'] = min($feature['properties']['handicap_moteur'], 3);
+    $geo['features'][] = array(
+        'type' => 'Feature',
+        'geometry' => $feature['geometry'],
+        'properties' => $properties,
+    );
 }
 
 $geo['features'] = array_values($geo['features']);
@@ -118,11 +129,12 @@ $symbols = array(
 while ($data = fgetcsv($handle, 1000, ';'))
 {
     $data = array_combine($head, $data);
+    $properties = array();
 
     if ($data['handicap_moteur'] != 'Oui') {
         continue;
     }
-    $data['handicap_moteur'] = 3;
+    $properties['handicap_moteur'] = 3;
 
     $description = '<h3>' . $data['etablissement'] . ' <small>(' . $data['structure'] . ')</small></h3>';
     $description .= '<ul>';
@@ -134,10 +146,10 @@ while ($data = fgetcsv($handle, 1000, ';'))
     $description .= '<p style="text-align:center"><small><a href="' . $data['siteweb'] . '" target="_blank">Site internet</a></small></p>';
 
 
-    $data['marker-color'] = '#3bc353';
-    $data['marker-size'] = 'large';
-    $data['marker-symbol'] = $symbols[$data['categorie']];
-    $data['description'] = $description;
+    $properties['marker-color'] = '#3bc353';
+    $properties['marker-size'] = 'large';
+    $properties['marker-symbol'] = $symbols[$data['categorie']];
+    $properties['description'] = $description;
 
     $geo['features'][] = array(
         'type' => 'Feature',
@@ -148,7 +160,7 @@ while ($data = fgetcsv($handle, 1000, ';'))
                 (float) $data['lat'],
             ),
         ),
-        'properties' => $data,
+        'properties' => $properties,
     );
 }
 
@@ -172,7 +184,9 @@ while ($data = fgetcsv($handle, 2000, ';'))
         continue;
     }
 
-    $data['handicap_moteur'] = 0;
+    $properties = array();
+
+    $properties['handicap_moteur'] = 0;
     $color = '#ff0000';
 
     if ($data['accessibilite_absence_de_ressaut_de_plus_de_2_cm_de_haut'] == 'Oui'
@@ -180,36 +194,36 @@ while ($data = fgetcsv($handle, 2000, ';'))
         && $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui'
         && $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] == 'Oui'
         && $data['accessibilite_presence_d_un_guichet_surbaisse_ou_d_un_ecritoire'] == 'Oui') {
-        $data['handicap_moteur'] = 3;
+        $properties['handicap_moteur'] = 3;
         $color = '#3bc353';
     } elseif ($data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] == 'Oui'
         && $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui') {
-        $data['handicap_moteur'] = 2;
+        $properties['handicap_moteur'] = 2;
         $color = '#ffffbe';
     } elseif ($data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] == 'Oui'
         || $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] == 'Oui') {
-        $data['handicap_moteur'] = 1;
+        $properties['handicap_moteur'] = 1;
         $color = '#ffca7d';
     }
 
     $description = '<h3>' . $data['libelle_du_site'] . ' <small>(' . $data['caracteristique_du_site'] . ')</small></h3>';
     $description .= '<ul>';
-    $description .= '<li>Entree en fauteuil roulant : ' . $data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] . '</li>';
+    $description .= '<li>Entrée en fauteuil roulant : ' . $data['accessibilite_entree_autonome_en_fauteuil_roulant_possible'] . '</li>';
     $description .= '<li>Circulation intérieur : ' . $data['accessibilite_espace_de_circulation_interieur_suffisant_pour_pmr'] . '</li>';
     $description .= '<li>Guiché extérieur accessible : ' . $data['accessibilite_presence_d_un_gab_externe_accessible_pmr'] . '</li>';
     $description .= '<li>Guiché surbaissé :  ' . $data['accessibilite_presence_d_un_guichet_surbaisse_ou_d_un_ecritoire'] . '</li>';
     $description .= '</ul>';
 
 
-    $url = sprintf('http://www.laposte.fr/particulier/outils/trouver-un-bureau-de-poste/bureau-detail/%s/%s', 
+    $url = sprintf('http://www.laposte.fr/particulier/outils/trouver-un-bureau-de-poste/bureau-detail/%s/%s',
         str_replace(array(' - ', ' '), '-', strtolower($data['libelle_du_site'])),
         $data['identifiant']);
     $description .= '<p style="text-align:center"><small><a href="' . $url . '" target="_blank">Site internet</a></small></p>';
 
-    $data['marker-color'] = $color;
-    $data['marker-size'] = 'large';
-    $data['marker-symbol'] = 'post';
-    $data['description'] = $description;
+    $properties['marker-color'] = $color;
+    $properties['marker-size'] = 'large';
+    $properties['marker-symbol'] = 'post';
+    $properties['description'] = $description;
 
     $geo['features'][] = $x = array(
         'type' => 'Feature',
@@ -220,7 +234,7 @@ while ($data = fgetcsv($handle, 2000, ';'))
                 (float) $data['latlon'],
             ),
         ),
-        'properties' => $data,
+        'properties' => $properties,
     );
 }
 
